@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini Pac-Man Game</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .top-bar {
+      padding: 10px;
+      background-color: #111;
+      display: flex;
+      justify-content: center;
+    }
+    .home-button {
+      background-color: #ffcc00;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    #game {
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      grid-template-rows: repeat(10, 30px);
+      margin: 20px auto;
+      width: 300px;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      box-sizing: border-box;
+    }
+    .wall {
+      background-color: navy;
+    }
+    .pac-dot {
+      background-color: black;
+      position: relative;
+    }
+    .pac-dot::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .pacman {
+      background: yellow;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a class="home-button" href="index.html">Back to Home</a>
+  </div>
+  <h1>Mini Pac-Man</h1>
+  <div id="game"></div>
+  <script>
+    const game = document.getElementById("game");
+
+    const layout = [
+      1,1,1,1,1,1,1,1,1,1,
+      1,0,0,0,1,0,0,0,0,1,
+      1,0,1,0,1,0,1,1,0,1,
+      1,0,1,0,0,0,0,1,0,1,
+      1,0,1,1,1,1,0,1,0,1,
+      1,0,0,0,0,0,0,1,0,1,
+      1,1,1,1,1,1,0,1,0,1,
+      1,0,0,0,0,1,0,1,0,1,
+      1,0,1,1,0,1,0,0,0,1,
+      1,1,1,1,1,1,1,1,1,1
+    ];
+
+    const width = 10;
+    const cells = [];
+
+    function createBoard() {
+      for (let i = 0; i < layout.length; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        if (layout[i] === 1) {
+          cell.classList.add('wall');
+        } else {
+          cell.classList.add('pac-dot');
+        }
+        game.appendChild(cell);
+        cells.push(cell);
+      }
+    }
+
+    createBoard();
+
+    let pacmanCurrentIndex = 11;
+    cells[pacmanCurrentIndex].classList.add('pacman');
+
+    function movePacman(e) {
+      cells[pacmanCurrentIndex].classList.remove('pacman');
+
+      switch (e.key) {
+        case "ArrowRight":
+          if (pacmanCurrentIndex % width < width - 1 && !cells[pacmanCurrentIndex + 1].classList.contains('wall')) {
+            pacmanCurrentIndex += 1;
+          }
+          break;
+        case "ArrowLeft":
+          if (pacmanCurrentIndex % width > 0 && !cells[pacmanCurrentIndex - 1].classList.contains('wall')) {
+            pacmanCurrentIndex -= 1;
+          }
+          break;
+        case "ArrowUp":
+          if (pacmanCurrentIndex - width >= 0 && !cells[pacmanCurrentIndex - width].classList.contains('wall')) {
+            pacmanCurrentIndex -= width;
+          }
+          break;
+        case "ArrowDown":
+          if (pacmanCurrentIndex + width < width * width && !cells[pacmanCurrentIndex + width].classList.contains('wall')) {
+            pacmanCurrentIndex += width;
+          }
+          break;
+      }
+
+      cells[pacmanCurrentIndex].classList.add('pacman');
+
+      if (cells[pacmanCurrentIndex].classList.contains('pac-dot')) {
+        cells[pacmanCurrentIndex].classList.remove('pac-dot');
+      }
+    }
+
+    document.addEventListener('keydown', movePacman);
+  </script>
+</body>
+</html>

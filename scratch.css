@@ -1,0 +1,22 @@
+
+
+#top {
+    text-decoration: underline;
+}
+
+.Header { 
+    font-style: italic;
+    color:brown;
+}
+
+.normal { 
+    font-style: oblique ;
+    color:darkmagenta
+}
+
+body{
+    background-color:whitesmoke;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border: 5px solid black 
+
+}
